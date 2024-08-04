@@ -10,6 +10,13 @@
 //
 // You will need to complete 1b as well before you will be able to run this program successfully.
 
+enum Shot {
+    Bullseye,
+    Hit(f64),
+    Miss,
+}
+
+
 impl Shot {
     // Here is a method for the `Shot` enum you just defined.
     fn points(self) -> i32 {
@@ -18,6 +25,13 @@ impl Shot {
         // - return 2 points if `self` is a `Shot::Hit(x)` where x < 3.0
         // - return 1 point if `self` is a `Shot::Hit(x)` where x >= 3.0
         // - return 0 points if `self` is a Miss
+        match self {
+            Shot::Bullseye => {5}
+            Shot::Hit(x) => {
+                if x < 3.0 {2} else {1}
+            }
+            Shot::Miss => {0}
+        }
     }
 }
 
@@ -25,6 +39,17 @@ fn main() {
     // Simulate shooting a bunch of arrows and gathering their coordinates on the target.
     let arrow_coords: Vec<Coord> = get_arrow_coords(5);
     let mut shots: Vec<Shot> = Vec::new();
+
+    for i in arrow_coords.iter() {
+        i.print_description();
+        match i.distance_from_center() {
+            x => {
+                if x < 1.0 {shots.push(Shot::Bullseye)}
+                else if x > 5.0 {shots.push(Shot::Miss)}
+                else {shots.push(Shot::Hit(x))}
+            }
+        }
+    }
 
     // 2. For each coord in arrow_coords:
     //
@@ -38,6 +63,10 @@ fn main() {
 
     let mut total = 0;
     // 3. Finally, loop through each shot in shots and add its points to total
+
+    for i in shots {
+        total += i.points()
+    }
 
     println!("Final point total is: {}", total);
 }
